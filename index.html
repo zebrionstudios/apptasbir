@@ -134,6 +134,14 @@ h1 span {color:var(--gold)}
   color:var(--muted);font-size:16px;line-height:1.85;
   max-width:510px
 }
+  h1 .hero-title-line {
+  display: block;
+  white-space: nowrap;
+}
+
+h1 .hero-title-line:last-child {
+  color: var(--gold);
+}
 .hero-actions {display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
 .hero-note {
   display:flex;gap:18px;flex-wrap:wrap;margin-top:25px;
@@ -411,7 +419,10 @@ footer {border-top:1px solid var(--line);padding:35px 0 24px}
     <div class="wrap hero-grid">
       <div class="reveal">
         <div class="eyebrow">Explore.Discover.Save</div>
-        <h1>Your Visuals<br><span>Yours Library.</span></h1>
+        <h1>
+  <span class="hero-title-line">Your Visuals</span>
+  <span class="hero-title-line">Yours Library.</span>
+</h1>
         <p class="hero-copy">
           Tasbir — Your Visual Discovery & Image Library
 
