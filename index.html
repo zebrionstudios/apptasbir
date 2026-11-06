@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#09090B">
+<meta name="description" content="TASBIR is an online image library. Discover, explore and download images. Free to use, with no ads and no in-app purchases.">
+<title>TASBIR — Online Image Library</title>
+
+<style>
+:root {
+  --bg:#09090B;
+  --surface:#111113;
+  --surface2:#18181B;
+  --text:#FAFAFA;
+  --muted:#A1A1AA;
+  --line:rgba(255,255,255,.09);
+  --gold:#FBBF24;
+  --gold2:#F59E0B;
+  --header:rgba(9,9,11,.82);
+}
+[data-theme="light"] {
+  --bg:#FAFAFA;
+  --surface:#FFFFFF;
+  --surface2:#F4F4F5;
+  --text:#18181B;
+  --muted:#71717A;
+  --line:rgba(24,24,27,.11);
+  --header:rgba(250,250,250,.86);
+}
+* {box-sizing:border-box}
+html {scroll-behavior:smooth;scroll-padding-top:90px}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  line-height:1.6;transition:background .25s,color .25s;
+}
+a {color:inherit;text-decoration:none}
+button {font:inherit}
+::selection {background:var(--gold);color:#111}
+.wrap {width:min(1160px,calc(100% - 48px));margin:auto}
+.topbar {
+  position:sticky;top:0;z-index:50;
+  background:var(--header);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+}
+.nav {
+  min-height:76px;display:flex;align-items:center;
+  justify-content:space-between;gap:25px;
+}
+.brand {display:flex;align-items:center;gap:11px}
+.brand img {width:38px;height:38px;object-fit:contain;border-radius:9px}
+.brand-name {font-size:17px;font-weight:850;letter-spacing:.16em}
+.brand-sub {
+  display:block;font-size:9px;color:var(--muted);
+  letter-spacing:.1em;font-weight:650;margin-top:3px
+}
+.nav-links {display:flex;gap:29px;align-items:center}
+.nav-links a {
+  color:var(--muted);font-size:13px;font-weight:650;
+  transition:color .2s
+}
+.nav-links a:hover {color:var(--gold)}
+.nav-actions {display:flex;align-items:center;gap:10px}
+.theme-toggle,.menu-toggle {
+  height:40px;width:40px;border:1px solid var(--line);
+  border-radius:50%;background:var(--surface);
+  color:var(--text);cursor:pointer;display:grid;place-items:center
+}
+.theme-toggle svg,.menu-toggle svg {width:18px;height:18px}
+.menu-toggle {display:none}
+.btn {
+  min-height:46px;padding:0 20px;border-radius:30px;
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:9px;font-size:13px;font-weight:800;
+  transition:transform .2s,background .2s,border-color .2s
+}
+.btn:hover {transform:translateY(-2px)}
+.btn-primary {background:var(--gold);color:#17120A}
+.btn-primary:hover {background:var(--gold2)}
+.btn-secondary {
+  background:var(--surface);border:1px solid var(--line);
+  color:var(--text)
+}
+.btn-secondary:hover {border-color:var(--gold)}
+.btn svg {width:16px;height:16px}
+
+/* Hero */
+.hero {padding:105px 0 90px;overflow:hidden;position:relative}
+.hero:before {
+  content:"";position:absolute;width:650px;height:500px;
+  right:-250px;top:-250px;pointer-events:none;
+  background:radial-gradient(ellipse,rgba(251,191,36,.10),transparent 70%)
+}
+.hero-grid {
+  display:grid;grid-template-columns:1.05fr .95fr;
+  align-items:center;gap:65px;position:relative
+}
+.eyebrow {
+  display:inline-flex;align-items:center;gap:9px;
+  color:var(--gold);font-size:11px;font-weight:850;
+  letter-spacing:.16em;text-transform:uppercase
+}
+.eyebrow:before {content:"";width:22px;height:1px;background:currentColor}
+h1 {
+  font-size:clamp(49px,6.3vw,79px);line-height:.99;
+  letter-spacing:-.065em;margin:23px 0 20px;font-weight:850
+}
+h1 span {color:var(--gold)}
+.hero-copy {
+  color:var(--muted);font-size:16px;line-height:1.85;
+  max-width:510px
+}
+.hero-actions {display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+.hero-note {
+  display:flex;gap:18px;flex-wrap:wrap;margin-top:25px;
+  font-size:11px;color:var(--muted);font-weight:650
+}
+.hero-note b {color:var(--gold);margin-right:5px}
+.visual {
+  min-height:480px;display:flex;align-items:center;
+  justify-content:center;position:relative
+}
+.visual-glow {
+  position:absolute;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(251,191,36,.13),transparent 70%)
+}
+.phone {
+  position:relative;width:min(300px,78%);padding:10px;
+  background:var(--surface2);border:1px solid var(--line);
+  border-radius:35px;box-shadow:0 25px 80px rgba(0,0,0,.35);
+  transform:rotate(2deg);transition:transform .4s
+}
+.phone:hover {transform:rotate(0) translateY(-5px)}
+.phone img {display:block;width:100%;height:auto;border-radius:26px}
+.float-tag {
+  position:absolute;z-index:2;background:var(--surface);
+  border:1px solid var(--line);border-radius:13px;
+  padding:12px 15px;font-size:11px;font-weight:800;
+  box-shadow:0 15px 40px rgba(0,0,0,.2)
+}
+.float-tag small {display:block;color:var(--muted);font-size:9px;font-weight:600}
+.tag-free {left:0;top:85px}
+.tag-library {right:-5px;bottom:90px}
+.green-dot {
+  display:inline-block;width:7px;height:7px;
+  border-radius:50%;background:#22C55E;margin-right:6px
+}
+
+/* Sections */
+.section {padding:94px 0}
+.section-border {border-top:1px solid var(--line)}
+.section-kicker {
+  color:var(--gold);font-size:10px;font-weight:850;
+  letter-spacing:.16em;text-transform:uppercase
+}
+.section-head {max-width:650px;margin-bottom:40px}
+h2 {
+  font-size:clamp(32px,4vw,48px);line-height:1.08;
+  letter-spacing:-.05em;margin:12px 0;font-weight:830
+}
+.section-head p,.intro-detail {
+  color:var(--muted);font-size:14px;line-height:1.9
+}
+.intro-grid {
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:70px;align-items:start
+}
+.intro-statement {
+  font-size:clamp(23px,2.8vw,33px);
+  line-height:1.4;letter-spacing:-.035em;font-weight:720
+}
+.intro-statement span {color:var(--gold)}
+
+/* How it works */
+.steps {display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.step {
+  padding:27px;min-height:220px;background:var(--surface);
+  border:1px solid var(--line);border-radius:21px;
+  transition:transform .25s,border-color .25s
+}
+.step:hover {transform:translateY(-5px);border-color:rgba(251,191,36,.5)}
+.step-no {color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.12em}
+.step-icon,.audience-icon {
+  height:42px;width:42px;border-radius:12px;
+  display:grid;place-items:center;background:rgba(251,191,36,.1);
+  color:var(--gold);margin:22px 0 16px
+}
+.step-icon svg,.audience-icon svg {width:20px;height:20px}
+.step h3,.audience h3 {font-size:16px;margin:0 0 8px}
+.step p,.audience p {
+  font-size:13px;color:var(--muted);line-height:1.75;margin:0
+}
+
+/* Audience */
+.audience-grid {display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+.audience {
+  padding:23px;background:var(--surface);
+  border:1px solid var(--line);border-radius:18px;
+  transition:transform .2s,border-color .2s
+}
+.audience:hover {transform:translateY(-3px);border-color:rgba(251,191,36,.45)}
+.audience-icon {margin:0 0 17px;background:var(--surface2)}
+
+/* Promise */
+.promise {
+  background:var(--surface);border-block:1px solid var(--line)
+}
+.promise-grid {
+  display:grid;grid-template-columns:.9fr 1.1fr;
+  gap:70px;align-items:center
+}
+.promise-copy p {
+  color:var(--muted);font-size:14px;line-height:1.9;max-width:440px
+}
+.promise-list {display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.promise-item {
+  display:flex;gap:13px;align-items:flex-start;
+  padding:18px;background:var(--bg);
+  border:1px solid var(--line);border-radius:15px
+}
+.promise-item svg {width:18px;height:18px;color:var(--gold);flex-shrink:0}
+.promise-item strong {display:block;font-size:13px}
+.promise-item span {display:block;color:var(--muted);font-size:11px;line-height:1.6}
+
+/* Download */
+.download {padding:90px 0}
+.download-panel {
+  padding:53px;border-radius:27px;background:var(--gold);
+  color:#17120A;display:flex;align-items:center;
+  justify-content:space-between;gap:35px;position:relative;overflow:hidden
+}
+.download-panel h2 {max-width:550px}
+.download-panel p {max-width:520px;color:rgba(23,18,10,.72);font-size:14px}
+.download-panel .section-kicker {color:rgba(23,18,10,.7)}
+.download-panel .btn {background:#17120A;color:#fff;white-space:nowrap}
+.download-panel .btn:hover {background:#302719}
+
+/* Footer */
+footer {border-top:1px solid var(--line);padding:35px 0 24px}
+.footer-top {
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:30px;padding-bottom:28px
+}
+.footer-brand p {max-width:260px;color:var(--muted);font-size:12px}
+.footer-links {display:flex;gap:21px;flex-wrap:wrap}
+.footer-links a {font-size:12px;color:var(--muted);font-weight:650}
+.footer-links a:hover {color:var(--gold)}
+.footer-bottom {
+  border-top:1px solid var(--line);padding-top:19px;
+  display:flex;justify-content:space-between;gap:15px;
+  color:var(--muted);font-size:11px
+}
+.made {color:var(--text)}
+.made span {color:var(--gold)}
+.reveal {
+  opacity:0;transform:translateY(18px);
+  transition:opacity .65s ease,transform .65s ease
+}
+.reveal.visible {opacity:1;transform:translateY(0)}
+#progress {
+  position:fixed;top:0;left:0;height:2px;width:0;
+  background:var(--gold);z-index:100
+}
+::-webkit-scrollbar {width:9px}
+::-webkit-scrollbar-track {background:var(--bg)}
+::-webkit-scrollbar-thumb {
+  background:var(--surface2);border:2px solid var(--bg);border-radius:20px
+}
+::-webkit-scrollbar-thumb:hover {background:var(--gold)}
+
+@media(max-width:900px) {
+  .nav-links {gap:17px}
+  .hero-grid {gap:30px}
+  .promise-grid {gap:35px}
+}
+@media(max-width:720px) {
+  .wrap {width:calc(100% - 36px)}
+  .nav {min-height:68px}
+  .nav-links {
+    display:none;position:absolute;top:68px;left:0;right:0;
+    background:var(--surface);padding:15px 22px 20px;
+    border-bottom:1px solid var(--line);
+    flex-direction:column;align-items:stretch;gap:0
+  }
+  .nav-links.open {display:flex}
+  .nav-links a {padding:12px 0;border-bottom:1px solid var(--line)}
+  .menu-toggle {display:grid}
+  .nav-download {display:none}
+  .hero {padding:72px 0 55px}
+  .hero-grid,.intro-grid,.promise-grid {grid-template-columns:1fr}
+  .hero-grid {gap:25px}
+  h1 {font-size:clamp(46px,13vw,66px)}
+  .hero-copy {font-size:14px}
+  .visual {min-height:410px}
+  .phone {width:min(260px,70%)}
+  .tag-free {top:65px}
+  .tag-library {bottom:65px}
+  .section {padding:70px 0}
+  .steps {grid-template-columns:1fr}
+  .step {min-height:auto}
+  .audience-grid {grid-template-columns:1fr 1fr}
+  .promise-list {grid-template-columns:1fr 1fr}
+  .download {padding:65px 0}
+  .download-panel {padding:34px 27px;align-items:flex-start;flex-direction:column}
+  .footer-top {flex-direction:column}
+  .footer-bottom {flex-direction:column}
+}
+@media(max-width:420px) {
+  .audience-grid,.promise-list {grid-template-columns:1fr}
+  .hero-actions .btn {width:100%}
+  .hero-note {gap:10px}
+}
+@media(prefers-reduced-motion:reduce) {
+  *,*::before,*::after {
+    scroll-behavior:auto!important;transition-duration:.01ms!important
+  }
+  .reveal {opacity:1;transform:none}
+}
+</style>
+</head>
+
+<body>
+<div id="progress"></div>
+
+<header class="topbar">
+  <div class="wrap nav">
+    <a class="brand" href="#home" aria-label="TASBIR home">
+      <img src="logo.png" alt="TASBIR logo">
+      <span>
+        <span class="brand-name">TASBIR</span>
+        <span class="brand-sub">ONLINE IMAGE LIBRARY</span>
+      </span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#for-everyone">Who it's for</a>
+      <a href="#our-promise">Our promise</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M2 12h2m16 0h2"/>
+        </svg>
+      </button>
+      <a class="btn btn-primary nav-download"
+        href="https://play.google.com/store/apps/details?id=com.zebrion.tasbir"
+        target="_blank" rel="noopener">Get the app ↗</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="1.8" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <div class="eyebrow">A library for visual discovery</div>
+        <h1>Find the image.<br><span>Tell the story.</span></h1>
+        <p class="hero-copy">
+          TASBIR is an online image library that brings visual content into one place.
+          Discover images, explore creative ideas and download content through a simple,
+          focused experience.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary"
+            href="https://play.google.com/store/apps/details?id=com.zebrion.tasbir"
+            target="_blank" rel="noopener">Explore TASBIR on Google Play ↗</a>
+          <a class="btn btn-secondary" href="#about">Discover TASBIR</a>
+        </div>
+        <div class="hero-note">
+          <span><b>✓</b> Free to use</span>
+          <span><b>✓</b> No ads</span>
+          <span><b>✓</b> No in-app purchases</span>
+        </div>
+      </div>
+
+      <div class="visual reveal">
+        <div class="visual-glow"></div>
+        <div class="float-tag tag-free">● Free to use<small>No subscription required</small></div>
+        <div class="phone">
+          <img src="screen.png" alt="TASBIR app screenshot">
+        </div>
+        <div class="float-tag tag-library">
+          One place for visuals
+          <small>Discover · Explore · Download</small>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-border" id="about">
+    <div class="wrap intro-grid">
+      <div class="section-head reveal">
+        <div class="section-kicker">01 / What is TASBIR?</div>
+        <h2>A simpler place for visual content.</h2>
+        <p>
+          TASBIR brings an image library experience to your phone, making it easier
+          to browse and find images for ideas, projects and everyday creative work.
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="intro-statement">
+          A useful image library should feel
+          <span>simple, accessible and focused.</span>
+        </div>
+        <p class="intro-detail">
+          Whether you are looking for a visual reference, collecting inspiration
+          or finding an image for a project, TASBIR gives you a dedicated place
+          to explore. Open the app, browse the available collection and use
+          images that fit your needs, subject to each image's usage terms.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-border" id="how-it-works">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-kicker">02 / How TASBIR is used</div>
+        <h2>Three simple steps.</h2>
+        <p>
+          Get started without a complicated workflow. TASBIR is designed
+          to make image discovery straightforward.
+        </p>
+      </div>
+
+      <div class="steps">
+        <article class="step reveal">
+          <div class="step-no">STEP 01</div>
+          <div class="step-icon">▤</div>
+          <h3>Open and explore</h3>
+          <p>Install TASBIR from Google Play and browse the image library from your device.</p>
+        </article>
+        <article class="step reveal">
+          <div class="step-no">STEP 02</div>
+          <div class="step-icon">⌕</div>
+          <h3>Find what you need</h3>
+          <p>Look through available images and open the ones that match your interest or project.</p>
+        </article>
+        <article class="step reveal">
+          <div class="step-no">STEP 03</div>
+          <div class="step-icon">↓</div>
+          <h3>Download and use</h3>
+          <p>Download images available to you and follow the applicable image license or usage conditions.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-border" id="for-everyone">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-kicker">03 / Who is TASBIR for?</div>
+        <h2>Made for people who work with visuals.</h2>
+        <p>
+          TASBIR can be useful to anyone who searches for, creates,
+          shares or works with images.
+        </p>
+      </div>
+
+      <div class="audience-grid">
+        <article class="audience reveal">
+          <div class="audience-icon">◎</div>
+          <h3>Photographers</h3>
+          <p>Explore visual references and discover a place to share photographic work.</p>
+        </article>
+        <article class="audience reveal">
+          <div class="audience-icon">✎</div>
+          <h3>Designers</h3>
+          <p>Find imagery and creative references while developing visual concepts.</p>
+        </article>
+        <article class="audience reveal">
+          <div class="audience-icon">▷</div>
+          <h3>Video editors</h3>
+          <p>Browse images that can support editing projects, visual planning and storytelling.</p>
+        </article>
+        <article class="audience reveal">
+          <div class="audience-icon">↗</div>
+          <h3>Content creators</h3>
+          <p>Discover visual material and inspiration for digital content and creative work.</p>
+        </article>
+        <article class="audience reveal">
+          <div class="audience-icon">▤</div>
+          <h3>Students and learners</h3>
+          <p>Explore images for learning, presentations, assignments and personal projects.</p>
+        </article>
+        <article class="audience reveal">
+          <div class="audience-icon">◎</div>
+          <h3>Social media pages</h3>
+          <p>Find visual references and images for planning and creating social media content.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section promise" id="our-promise">
+    <div class="wrap promise-grid">
+      <div class="promise-copy reveal">
+        <div class="section-kicker">04 / Our promise</div>
+        <h2>Useful by design.<br>Simple by choice.</h2>
+        <p>
+          We want the core image-library experience to stay accessible and straightforward.
+          TASBIR is currently free to use, without advertisements or in-app purchases.
+        </p>
+      </div>
+
+      <div class="promise-list reveal">
+        <div class="promise-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+          <div><strong>Free to use</strong><span>Access the app without a paid plan.</span></div>
+        </div>
+        <div class="promise-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+          <div><strong>No advertisements</strong><span>No ad placements inside the current app experience.</span></div>
+        </div>
+        <div class="promise-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+          <div><strong>No in-app purchases</strong><span>No purchases are required inside the app.</span></div>
+        </div>
+        <div class="promise-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+          <div><strong>Focused experience</strong><span>Built around discovering and using images.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="download" id="download">
+    <div class="wrap">
+      <div class="download-panel reveal">
+        <div>
+          <div class="section-kicker">Start exploring</div>
+          <h2>Your next image is a few taps away.</h2>
+          <p>Get TASBIR on Google Play and explore the online image library from your Android device.</p>
+        </div>
+        <a class="btn"
+          href="https://play.google.com/store/apps/details?id=com.zebrion.tasbir"
+          target="_blank" rel="noopener">▶ Get TASBIR on Google Play</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a class="brand" href="#home">
+          <img src="logo.png" alt="TASBIR logo">
+          <span>
+            <span class="brand-name">TASBIR</span>
+            <span class="brand-sub">ONLINE IMAGE LIBRARY</span>
+          </span>
+        </a>
+        <p>A simple place to discover, explore and download images.</p>
+      </div>
+
+      <nav class="footer-links" aria-label="Footer links">
+        <a href="#about">About</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="license.html">License Agreement</a>
+        <a href="https://www.facebook.com/share/19g8yiPrYn/" target="_blank" rel="noopener">Facebook</a>
+        <a href="mailto:supporttasbir@gmail.com">Contact support</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> TASBIR. All rights reserved.</span>
+      <span class="made">Proudly made and developed in <span>Nepal.</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+  const progress = document.getElementById('progress');
+
+  const savedTheme = localStorage.getItem('tasbir-theme');
+  const preferred = window.matchMedia('(prefers-color-scheme: light)').matches
+    ? 'light' : 'dark';
+
+  function setTheme(theme) {
+    root.setAttribute('data-theme', theme);
+    themeIcon.innerHTML = theme === 'dark'
+      ? '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19m0-14-1.5 1.5m-11 11L5 19"/>'
+      : '<path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/>';
+    themeToggle.setAttribute('aria-label',
+      theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    document.querySelector('meta[name="theme-color"]').content =
+      theme === 'dark' ? '#09090B' : '#FAFAFA';
+  }
+
+  setTheme(savedTheme || preferred);
+
+  themeToggle.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    localStorage.setItem('tasbir-theme', next);
+  });
+
+  menuToggle.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  });
+
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  function updateProgress() {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.width = (total > 0 ? window.scrollY / total * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', updateProgress, {passive:true});
+  updateProgress();
+
+  const revealItems = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {threshold:.12});
+    revealItems.forEach(item => observer.observe(item));
+  } else {
+    revealItems.forEach(item => item.classList.add('visible'));
+  }
+})();
+</script>
+</body>
+</html>
